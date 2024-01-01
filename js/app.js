@@ -3,7 +3,14 @@ if (!localStorage.getItem('goods')) {
 }
 
 let myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
-    keyboard: false});
+    keyboard: false
+})
+
+let options = {
+    valueNames: ['name', 'price']
+}
+let userlist;
+
 
 document.querySelector('button.add_new').addEventListener('click', function(e) {
     let name = document.getElementById('good_name').value,
@@ -32,7 +39,9 @@ document.querySelector('button.add_new').addEventListener('click', function(e) {
     }
 })
 
+
 update_goods();
+
 
 function update_goods() {
     let result_price = 0,
@@ -76,7 +85,7 @@ function update_goods() {
             }
         }
 
-        // userlist = new list('goods', options);
+        userlist = new List('goods', options);
 
     } else {
         table1.hidden = true;
@@ -86,3 +95,38 @@ function update_goods() {
     document.querySelector('.price_result').innerHTML = result_price + '&#8381;'
 
 };
+
+
+document.querySelector('.list').addEventListener('click', function(e) {
+    if (!e.target.dataset.delete) {
+        return;
+    }
+    Swal.fire({
+        title: 'Внимание!',
+        text: 'Вы действительно хотите удалить товар?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Да',
+        cancelButtonText: 'Отмена',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let goods = JSON.parse(localStorage.getItem('goods'));
+            for (let i = 0; i < goods.length; i++) {
+                if (goods[i][0] == e.target.dataset.delete) {
+                    goods.splice(i, 1);
+                    localStorage.setItem('goods', JSON.stringify(goods));
+                    update_goods();
+                }
+            }
+
+            Swal.fire(
+                'Удалено!',
+                'Выбранный товар был успешно удалён.',
+                'success',
+            )
+
+        }
+    })
+})
