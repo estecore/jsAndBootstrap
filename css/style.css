@@ -25,7 +25,7 @@ input {
 }
 
 button.add,
-button.good_delete {
+button.goods_delete {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,7 +49,7 @@ button.good_delete {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
+    margin: 15px 0;
 }
 
 .price_title,
