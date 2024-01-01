@@ -12,6 +12,8 @@ let options = {
 let userlist;
 
 
+// ============ add element
+
 document.querySelector('button.add_new').addEventListener('click', function(e) {
     let name = document.getElementById('good_name').value,
         price = document.getElementById('good_price').value,
@@ -42,6 +44,8 @@ document.querySelector('button.add_new').addEventListener('click', function(e) {
 
 update_goods();
 
+
+// ============ interface
 
 function update_goods() {
     let result_price = 0,
@@ -97,6 +101,8 @@ function update_goods() {
 };
 
 
+// ============ delete element
+
 document.querySelector('.list').addEventListener('click', function(e) {
     if (!e.target.dataset.delete) {
         return;
@@ -129,4 +135,42 @@ document.querySelector('.list').addEventListener('click', function(e) {
 
         }
     })
+})
+
+
+// ============ add to cart
+
+document.querySelector('.list').addEventListener('click', function(e) {
+    if (!e.target.dataset.goods) {
+        return;
+    }
+
+    let goods = JSON.parse(localStorage.getItem('goods'));
+    for (let i = 0; i < goods.length; i++) {
+        if (goods[i][3] > 0 && goods[i][0] == e.target.dataset.goods) {
+            goods[i].splice(3, 1, goods[i][3] - 1);
+            goods[i].splice(4, 1, goods[i][4] + 1);
+            localStorage.setItem('goods', JSON.stringify(goods));
+            update_goods();
+        }
+    }
+})
+
+
+// ============ delete from cart
+
+document.querySelector('.cart').addEventListener('click', function(e) {
+    if (!e.target.dataset.delete) {
+        return;
+    }
+
+    let goods = JSON.parse(localStorage.getItem('goods'));
+    for (let i = 0; i < goods.length; i++) {
+        if (goods[i][4] > 0 && goods[i][0] == e.target.dataset.delete) {
+            goods[i].splice(3, 1, goods[i][3] + 1);
+            goods[i].splice(4, 1, goods[i][4] - 1);
+            localStorage.setItem('goods', JSON.stringify(goods));
+            update_goods();
+        }
+    }
 })
